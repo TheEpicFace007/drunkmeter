@@ -5,6 +5,7 @@ import threading
 import os
 import sys
 import tkinter.ttk as ttk
+import ttkthemes
 import tkmacosx
 
 def get_5_most_common_color(image):
@@ -25,9 +26,9 @@ def is_color_dark(color):
     # https://stackoverflow.com/a/3943023/1149779
     return sum(color) < 382
 
-class SplashScreen(tkinter.Tk):
-    def __init__(self, splash_img, most_common_color_idx=0, *args, **kwargs):
-        super(SplashScreen, self).__init__()
+class SplashScreen(ttkthemes.ThemedTk):
+    def __init__(self, splash_img, most_common_color_idx=0, theme=None, *args, **kwargs):
+        super(SplashScreen, self).__init__(theme=theme, *args, **kwargs)
         splash_img.thumbnail((600, 400))
         self.wm_attributes("-topmost", True)
 
