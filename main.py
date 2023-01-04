@@ -15,7 +15,13 @@ from PIL import Image
 import splashscreen
 
 THEME = "Clearlooks"
-
+ALCOHOL_DOSAGE = [
+    ("Threshold", "1 standard drink"),
+    ("Light", "1-3 standard drinks"),
+    ("Common", "3-5 standard drinks"),
+    ("Strong", "5-6 standard drinks"),
+    ("Heavy", "6+ standard drinks")
+]
 
 def calculate_standard_drink(abv, volume):
     """Calculate the number of standard drink in a drink"""
@@ -36,17 +42,21 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
             self.rowconfigure(row, weight=1)
         for col in range(3):
             self.columnconfigure(col, weight=1)
-        self.build_ui()
         
+        self.create_variables()
+        self.build_ui()
+    
+    
+    def create_variables(self):
+        self.vol_var = tkinter.StringVar()
+        self.abv_var = tkinter.StringVar()
+    
     def build_ui(self):
         self.abv_label = tkinter.Label(self, text="ABV (%)")
         self.abv_label.grid(row=0, column=0)
 
         self.vol_label = tkinter.Label(self, text="Volume (ml)")
         self.vol_label.grid(row=0, column=1, columnspan=2)
-
-        self.vol_var = tkinter.DoubleVar()
-        self.abv_var = tkinter.DoubleVar()
 
         self.abv_entry = tkinter.Entry(self, textvariable=self.abv_var)
         self.abv_entry.grid(row=1, column=0)
@@ -66,32 +76,32 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         self.dosage_label = tkinter.Label(self, text="Alcohol dosage (Standard drinks)")
         self.dosage_label.grid(row=3, column=0, columnspan=3)
 
-        dosage_table = tkinter.Listbox(self)
-        dosage_table.grid(row=4, column=0, columnspan=3)
-        # Set the dosage table items to be unselectable and to display 5 items
-        dosage_table.config(selectmode="none", height=5, width=30)
+        dosage_table = ttk.Treeview(self, show="headings", selectmode="none",
+                                    height=5, columns=("strenght", "dosage"),
+                                    displaycolumns="#all")
+        dosage_table.heading("strenght", text="Strenght")
+        dosage_table.heading("dosage", text="Dosage")
+        dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2)
 
-        dosage_table.insert(tkinter.END, "Threshold: 1 standard drink")
-        dosage_table.insert(tkinter.END, "Light: 1-3 standard drinks")
-        dosage_table.insert(tkinter.END, "Common: 3-5 standard drinks")
-        dosage_table.insert(tkinter.END, "Strong: 5-6 standard drinks")
-        dosage_table.insert(tkinter.END, "Heavy: 6+ standard drinks")
+        for dose, dosage in ALCOHOL_DOSAGE:
+            dosage_table.insert('', index="end", values=[dose, dosage])
 
     def calculate(self):
         try:
-            if self.abv_var.get() >= 100:
+            if float(self.abv_var.get()) >= 100:
                 tkinter.messagebox.showerror(
                     "Error", "ABV must be less than 100%", icon="error", parent=self)
                 return
-            elif self.abv_var.get() <= 0:
+            elif float(self.abv_var.get()) <= 0:
                 tkinter.messagebox.showerror(
                     "Error", "ABV must be greater than 0%", icon="error", parent=self)
                 return
-            elif self.vol_var.get() <= 0:
+            elif float(self.vol_var.get()) <= 0:
                 tkinter.messagebox.showerror(
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
-            standard_drinks = calculate_standard_drink(self.abv_var.get(), self.vol_var.get())
+            standard_drinks = calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
+            standard_drinks = round(standard_drinks, 2)
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError as e:
             # tkinter.messagebox.showerror("Error", str(e), icon="error", parent=tk)
