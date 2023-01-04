@@ -61,7 +61,7 @@ def calculate():
     result_label.config(text="Result: {}".format(result))
 
 calculate_btn = tkmacosx.Button(tk, text="Calculate", command=calculate)
-calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#FF5733", activeforeground="black")
+calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#ffd558", activeforeground="black")
 calculate_btn.grid(row=2, column=0, columnspan=3)
 
 # Display a grid displaying the alcohol dosage according to psychonautwiki
