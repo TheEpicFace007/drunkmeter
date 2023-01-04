@@ -1,12 +1,14 @@
-import random
-import tkinter
-from PIL import Image, ImageTk
-import threading
 import os
+import random
 import sys
+import threading
+import tkinter
 import tkinter.ttk as ttk
-import ttkthemes
+
 import tkmacosx
+import ttkthemes
+from PIL import Image, ImageTk
+
 
 def get_5_most_common_color(image):
     """Get the 5 most common color in a PIL image"""
