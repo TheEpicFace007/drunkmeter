@@ -1,3 +1,4 @@
 tkmacosx
 pyshortcuts
 pyinstaller
+ttkthemes
