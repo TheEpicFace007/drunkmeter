@@ -7,6 +7,7 @@ import tkinter.ttk as ttk
 
 import tkmacosx
 import ttkthemes
+from mttkinter import mtTkinter
 from PIL import Image, ImageTk
 
 
@@ -28,7 +29,7 @@ def is_color_dark(color):
     # https://stackoverflow.com/a/3943023/1149779
     return sum(color) < 382
 
-class SplashScreen(ttkthemes.ThemedTk, tkinter.Toplevel):
+class SplashScreen(ttkthemes.ThemedTk, mtTkinter.Toplevel):
     def __init__(self, splash_img, most_common_color_idx=0, theme=None, *args, **kwargs):
         super(SplashScreen, self).__init__(theme=theme, *args, **kwargs)
         splash_img.thumbnail((600, 400))
@@ -76,7 +77,8 @@ class SplashScreen(ttkthemes.ThemedTk, tkinter.Toplevel):
     def loading_status(self, value):
         self._loading_label['text'] = value
     
-    def destroy(self) -> None:
+    def destroy(self):
+        print("Destroying...")
         self.loading_bar.stop()
         return super(SplashScreen, self).destroy()
     
