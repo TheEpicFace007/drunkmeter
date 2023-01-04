@@ -3,7 +3,7 @@ import tkmacosx
 import os
 import tkinter.messagebox
 
-def calculate_avb(abv, volume):
+def calculate_standard_drink(abv, volume):
     return round(abv * volume / 1000, 2)
 
 tk = tkinter.Tk()
@@ -52,7 +52,8 @@ def calculate():
         if float(vol_var.get()) <= 0:
             tkinter.messagebox.showerror("Error", "Volume must be greater than 0")
             return  
-        result = str(calculate_avb(float(abv_var.get()), float(vol_var.get()))) + " units"
+        standard_drinks = calculate_standard_drink(float(abv_var.get()), float(vol_var.get()))
+        result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
     except ValueError:
         result = "Invalid input"
     
