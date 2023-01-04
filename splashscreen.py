@@ -28,7 +28,7 @@ def is_color_dark(color):
     # https://stackoverflow.com/a/3943023/1149779
     return sum(color) < 382
 
-class SplashScreen(ttkthemes.ThemedTk):
+class SplashScreen(ttkthemes.ThemedTk, tkinter.Widget):
     def __init__(self, splash_img, most_common_color_idx=0, theme=None, *args, **kwargs):
         super(SplashScreen, self).__init__(theme=theme, *args, **kwargs)
         splash_img.thumbnail((600, 400))
@@ -37,9 +37,11 @@ class SplashScreen(ttkthemes.ThemedTk):
         if  sys.platform == "darwin":
             self.wm_attributes("-type", "splash")
             self.wm_attributes("-transparent", True)
-            self.wm_attributes("-titlepath", )
+            self.wm_attributes("-notify", True)
+            self.wm_attributes("-fullscreen", False)
         elif sys.platform in ["win32", "cygwin"]:
             self.wm_attributes("-toolwindow", True)
+            
         
         # Set the image
         self._gui_image_container = tkinter.Label(self)
