@@ -44,17 +44,18 @@ result_label.grid(row=1, column=2)
 def calculate():  
     try:
         if float(abv_var.get()) >= 100:
-            tkinter.messagebox.showerror("Error", "ABV must be less than or equal to 100%")
+            tkinter.messagebox.showerror("Error", "ABV must be less than or equal to 100%", icon="error", parent=tk)
             return
         elif float(abv_var.get()) <= 0:
-            tkinter.messagebox.showerror("Error", "ABV must be greater than 0%")
+            tkinter.messagebox.showerror("Error", "ABV must be greater than 0%", icon="error", parent=tk)
         
         if float(vol_var.get()) <= 0:
-            tkinter.messagebox.showerror("Error", "Volume must be greater than 0")
+            tkinter.messagebox.showerror("Error", "Volume must be greater than 0", icon="error", parent=tk)
             return  
         standard_drinks = calculate_standard_drink(float(abv_var.get()), float(vol_var.get()))
         result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
-    except ValueError:
+    except ValueError as e:
+        # tkinter.messagebox.showerror("Error", str(e), icon="error", parent=tk)
         result = "Invalid input"
     
     result_label.config(text="Result: {}".format(result))
