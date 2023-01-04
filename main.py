@@ -7,7 +7,7 @@ def calculate_avb(abv, volume):
     return round(abv * volume / 1000, 2)
 
 tk = tkinter.Tk()
-tk.title("US alcohol units calculator")
+tk.title("Drunkmeter")
 tk.iconphoto(True, tkinter.PhotoImage(file=os.path.join(os.path.dirname(__file__), "icon.png")))
 
 for row in range(5):
