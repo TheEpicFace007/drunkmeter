@@ -23,14 +23,16 @@ ALCOHOL_DOSAGE = [
     ("Strong", "5-6 standard drinks"),
     ("Heavy", "6+ standard drinks")
 ]
+app_dir = os.path.dirname(__file__)
 
 
-
-splash = splashscreen.SplashScreen(Image.open(os.path.join("splashscreen.png")),
+splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")),
                                    most_common_color_idx=random.randint(0, 4),
                                    theme=THEME,
                                    )
-splash.tk.call('wm', 'iconphoto', splash._w, tkinter.PhotoImage(file=os.path.join("icon.png")))
+
+
+splash.tk.call('wm', 'iconphoto', splash._w, tkinter.PhotoImage(file=os.path.join(app_dir, "icon.png")))
 class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
