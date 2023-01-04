@@ -72,6 +72,9 @@ class SplashScreen(ttkthemes.ThemedTk):
     def loading_status(self, value):
         self._loading_label['text'] = value
     
+    def destroy(self) -> None:
+        self.loading_bar.stop()
+        return super(SplashScreen, self).destroy()
     
 if __name__ == '__main__':
     splash_img = Image.open("./splashscreen.png")
