@@ -13,6 +13,7 @@ from mttkinter import mtTkinter
 from PIL import Image
 
 import splashscreen
+import standardDrinks
 
 THEME = "Clearlooks"
 ALCOHOL_DOSAGE = [
@@ -23,9 +24,6 @@ ALCOHOL_DOSAGE = [
     ("Heavy", "6+ standard drinks")
 ]
 
-def calculate_standard_drink(abv, volume):
-    """Calculate the number of standard drink in a drink"""
-    return round(abv * volume / 1000, 2)
 
 
 splash = splashscreen.SplashScreen(Image.open(os.path.join("splashscreen.png")),
@@ -100,7 +98,7 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
                 tkinter.messagebox.showerror(
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
-            standard_drinks = calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
+            standard_drinks = standardDrinks.calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
             standard_drinks = round(standard_drinks, 2)
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError as e:
