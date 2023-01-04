@@ -1,7 +1,7 @@
 import tkinter
 import tkmacosx
 import os
-
+import tkinter.messagebox
 
 def calculate_avb(abv, volume):
     return round(abv * volume / 1000, 2)
@@ -41,8 +41,17 @@ vol_entry.grid(row=1, column=1)
 result_label = tkinter.Label(tk, text="Result: ")
 result_label.grid(row=1, column=2)
 
-def calculate():
+def calculate():  
     try:
+        if float(abv_var.get()) >= 100:
+            tkinter.messagebox.showerror("Error", "ABV must be less than or equal to 100%")
+            return
+        elif float(abv_var.get()) <= 0:
+            tkinter.messagebox.showerror("Error", "ABV must be greater than 0%")
+        
+        if float(vol_var.get()) <= 0:
+            tkinter.messagebox.showerror("Error", "Volume must be greater than 0")
+            return  
         result = str(calculate_avb(float(abv_var.get()), float(vol_var.get()))) + " units"
     except ValueError:
         result = "Invalid input"
@@ -50,7 +59,7 @@ def calculate():
     result_label.config(text="Result: {}".format(result))
 
 calculate_btn = tkmacosx.Button(tk, text="Calculate", command=calculate)
-calculate_btn.configure(bg="#007AFF", fg="white")
+calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#FF5733", activeforeground="black")
 calculate_btn.grid(row=2, column=0, columnspan=3)
 
 # Display a grid displaying the alcohol dosage according to psychonautwiki
