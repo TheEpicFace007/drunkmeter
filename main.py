@@ -125,7 +125,9 @@ class Drunkmeter(tkinter.Tk):
 if sys.platform == "darwin":
     time.sleep(1.75) # Wait 1 seocnd in order to bounce the dock icon
 win = Drunkmeter()
-win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id())) # Center the window
+# Place the windows on the center of the screen in a manner that works on all platforms
+win.update_idletasks()
+win.geometry(f"+{win.winfo_screenwidth() // 2 - win.winfo_width() // 2}+{win.winfo_screenheight() // 2 - win.winfo_height() // 2}")
 win.iconphoto(True, ImageTk.PhotoImage(file=os.path.join(app_dir, "icon.png")))
 
 splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")), win)
