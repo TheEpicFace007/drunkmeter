@@ -43,11 +43,7 @@ class SplashScreen(tkinter.Toplevel):
         else:
             self._root.deiconify()
             self._root.update()
-            
-            
-        
 
-        
 if __name__ == '__main__':
     splash_img = Image.open("./splashscreen.png")
     splashscreen = SplashScreen(splash_img, tkinter.Tk())
