@@ -1,5 +1,4 @@
 tkmacosx
 pyshortcuts
 pyinstaller
-ttkthemes
-mtTkinter
+pillow
