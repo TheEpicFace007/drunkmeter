@@ -6,6 +6,8 @@ import sys
 import typing
 
 import tkmacosx
+from rich import inspect
+from rich.pretty import pprint
 from PIL import Image, ImageTk, ImageColor
 
 import splashscreen
@@ -73,9 +75,9 @@ class Drunkmeter(tkinter.Tk):
         self.result_label.grid(row=1, column=2)
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
-        self.calculate_btn.configure(bg="#FFC000", fg="black",
+        self.calculate_btn.configure(bg="#FFC000", fg="black", 
                                 activebackground="#ffd558", activeforeground="black")
-        self.calculate_btn.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
+        self.calculate_btn.grid(row=2, column=0, columnspan=3, ipadx=30, ipady=3, pady=10)
 
         # Display a grid displaying the alcohol dosage
         self.dosage_label = tkinter.Label(self, text="Alcohol dosage (Standard drinks)")
