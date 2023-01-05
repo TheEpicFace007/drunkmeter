@@ -76,7 +76,8 @@ class Drunkmeter(tkinter.Tk):
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
         self.calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#ffd558", activeforeground="black",
-                                     highlightcolor="#ffd558", relief="raised")
+                                     highlightcolor="#ffd558", relief=tkinter.RAISED, 
+                                     )
         self.calculate_btn.grid(row=2, column=0, columnspan=3, ipadx=30, ipady=3, pady=10)
 
         # Display a grid displaying the alcohol dosage
