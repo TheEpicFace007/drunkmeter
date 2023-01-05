@@ -1,13 +1,7 @@
-import os
 import random
 import sys
-import threading
 import tkinter
-import tkinter.ttk as ttk
 
-import tkmacosx
-import ttkthemes
-from mttkinter import mtTkinter
 from PIL import Image, ImageTk
 
 
@@ -33,8 +27,9 @@ def is_color_dark(color):
     return sum(color) < 382
 
 class SplashScreen(tkinter.Toplevel):
-    def __init__(self, splash_img, root, most_common_color_idx=0, theme=None, *args, **kwargs):
+    def __init__(self, splash_img, root, theme=None, *args, **kwargs):
         super(SplashScreen, self).__init__(root, *args, **kwargs)
+        root.withdraw()
         splash_img.thumbnail((600, 400))
 
         self.wm_attributes("-topmost", True)
@@ -60,7 +55,8 @@ class SplashScreen(tkinter.Toplevel):
         # Put the window on the center of the screen
         self.update_idletasks()
         self.geometry(f"+{int(self.winfo_screenwidth()/2 - self.winfo_width()/2)}+{int(self.winfo_screenheight()/2 - self.winfo_height()/2)}")
-        self.after(3000, self.destroy)
+        # Set the icon as icon.png
+        root.iconphoto(True, tkinter.PhotoImage(file="./icon.png"))
         
 if __name__ == '__main__':
     splash_img = Image.open("./splashscreen.png")
