@@ -20,16 +20,17 @@ ALCOHOL_DOSAGE = [
     ("Threshold", "1 standard drink", "#81f8f3"),
     ("Light", "1-3 standard drinks", "#90ed91"),
     ("Common", "3-5 standard drinks", "#ffff00"),
-    ("Strong", "5-6 standard drinks", "#ffff00"),
+    ("Strong", "5-6 standard drinks", "#ff9900"),
     ("Heavy", "6+ standard drinks", "#ff0000")
 ]
 app_dir = os.path.dirname(__file__)
 
 
-class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
+class Drunkmeter(mtTkinter.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Drunkmeter")
+        
         # Configure the rows and columns to be resizable
         for row in range(5):
             self.rowconfigure(row, weight=1)
@@ -53,10 +54,10 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         
         tkinter.Label(self, text="Resullt").grid(row=0, column=2, columnspan=1)
 
-        self.abv_entry = tkinter.Entry(self, textvariable=self.abv_var)
+        self.abv_entry = ttk.Entry(self, textvariable=self.abv_var)
         self.abv_entry.grid(row=1, column=0)
 
-        vol_entry = tkinter.Entry(self, textvariable=self.vol_var)
+        vol_entry = ttk.Entry(self, textvariable=self.vol_var)
         vol_entry.grid(row=1, column=1)
 
         self.result_label = tkinter.Label(self, text="")
@@ -65,7 +66,7 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
         self.calculate_btn.configure(bg="#FFC000", fg="black",
                                 activebackground="#ffd558", activeforeground="black")
-        self.calculate_btn.grid(row=2, column=0, columnspan=3, padx=10)
+        self.calculate_btn.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
 
         # Display a grid displaying the alcohol dosage according to psychonautwiki
         self.dosage_label = tkinter.Label(self, text="Alcohol dosage (Standard drinks)")
@@ -76,7 +77,7 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
                                     displaycolumns="#all")
         dosage_table.heading("strenght", text="Strenght")
         dosage_table.heading("dosage", text="Dosage")
-        dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2)
+        dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2, pady=10)
 
         for dose, dosage, color in ALCOHOL_DOSAGE:
             # Unpack the hex color into a tuple of 3 integers
@@ -106,7 +107,7 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
             result = "Invalid input"
 
         self.result_label.config(text="{}".format(result))
-win = Drunkmeter(theme=THEME)
+win = Drunkmeter()
 win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id()))
 
 win.withdraw()
@@ -117,7 +118,7 @@ def after_splash():
     win.deiconify()
     win.focus()
     win.iconphoto(True, ImageTk.PhotoImage(Image.open(os.path.join(app_dir, "icon.png"))))
-splash.after(3000, after_splash)
+splash.after(1500, after_splash)
     
 
 
