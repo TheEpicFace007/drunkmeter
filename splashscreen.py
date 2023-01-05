@@ -48,13 +48,14 @@ class SplashScreen(tkinter.Toplevel):
         
         self._gui_image_container.pack(fill="both", expand="yes")
         self.geometry(f"{splash_img.width}x{splash_img.height}")
+        
+        # Put the window on the center of the screen
+        self.update_idletasks()
+        self.geometry(f"+{int(self.winfo_screenwidth()/2 - self.winfo_width()/2)}+{int(self.winfo_screenheight()/2 - self.winfo_height()/2)}")
 
         # Set sizing constraints
         self.geometry(f"{splash_img.width}x{splash_img.height}")
         self.resizable(False, False)
-        # Put the window on the center of the screen
-        self.update_idletasks()
-        self.geometry(f"+{int(self.winfo_screenwidth()/2 - self.winfo_width()/2)}+{int(self.winfo_screenheight()/2 - self.winfo_height()/2)}")
         # Set the icon as icon.png
         root.iconphoto(True, tkinter.PhotoImage(file="./icon.png"))
         
