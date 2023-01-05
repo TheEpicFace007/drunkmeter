@@ -4,6 +4,7 @@ import tkinter.messagebox
 import tkinter.ttk as ttk
 import sys
 import typing
+import time
 
 import tkmacosx
 from rich import inspect
@@ -63,7 +64,8 @@ class Drunkmeter(tkinter.Tk):
         self.vol_label = tkinter.Label(self, text="Volume (ml)")
         self.vol_label.grid(row=0, column=1, columnspan=1)
         
-        tkinter.Label(self, text="Resullt").grid(row=0, column=2, columnspan=1)
+        self.result_lbl = tkinter.Label(self, text="Resullt")
+        self.result_lbl.grid(row=0, column=2, columnspan=1)
 
         self.abv_entry = ttk.Entry(self, textvariable=self.abv_var)
         self.abv_entry.grid(row=1, column=0)
@@ -71,12 +73,13 @@ class Drunkmeter(tkinter.Tk):
         vol_entry = ttk.Entry(self, textvariable=self.vol_var)
         vol_entry.grid(row=1, column=1)
 
-        self.result_label = tkinter.Label(self, text="")
-        self.result_label.grid(row=1, column=2)
+        self.result_container = tkinter.Label(self, text="")
+        self.result_container.grid(row=1, column=2)
+        self.result_container.configure(font=("sans-serif", 20, "bold"))
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
         self.calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#ffd558", activeforeground="black",
-                                     highlightcolor="#ffd558", relief=tkinter.RAISED, 
+                                     highlightcolor="#ffd558", relief=tkinter.RAISED,
                                      )
         self.calculate_btn.grid(row=2, column=0, columnspan=3, ipadx=30, ipady=3, pady=10)
 
@@ -117,8 +120,10 @@ class Drunkmeter(tkinter.Tk):
             tkinter.messagebox.showerror("Imvalid input", "ABV and volume must be numbers", icon="error", parent=self)
             result = "Invalid input"
 
-        self.result_label.config(text="{}".format(result))
+        self.result_container.config(text="{}".format(result))
 
+if sys.platform == "darwin":
+    time.sleep(1.75) # Wait 1 seocnd in order to bounce the dock icon
 win = Drunkmeter()
 win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id())) # Center the window
 win.iconphoto(True, ImageTk.PhotoImage(file=os.path.join(app_dir, "icon.png")))
