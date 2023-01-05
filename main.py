@@ -1,14 +1,9 @@
 import os
-import random
-import sys
-import threading
-import time
 import tkinter
 import tkinter.messagebox
 import tkinter.ttk as ttk
 
 import tkmacosx
-import ttkthemes
 from mttkinter import mtTkinter
 from PIL import Image, ImageTk
 
