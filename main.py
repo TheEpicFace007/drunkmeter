@@ -105,15 +105,14 @@ class Drunkmeter(mtTkinter.Tk):
 win = Drunkmeter()
 win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id()))
 
-win.withdraw()
+win.update()
 splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")), win)
-splash.focus()
+splash.wm_attributes("-topmost", 1)
 def after_splash():
     splash.destroy()
-    win.deiconify()
-    win.focus()
     win.iconphoto(True, ImageTk.PhotoImage(Image.open(os.path.join(app_dir, "icon.png"))))
-splash.after(1500, after_splash)
+    win.deiconify()
+splash.after(2500, after_splash)
     
 
 
