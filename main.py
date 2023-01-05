@@ -10,7 +10,7 @@ import tkinter.ttk as ttk
 import tkmacosx
 import ttkthemes
 from mttkinter import mtTkinter
-from PIL import Image
+from PIL import Image, ImageTk
 
 import splashscreen
 import standardDrinks
@@ -26,13 +26,6 @@ ALCOHOL_DOSAGE = [
 app_dir = os.path.dirname(__file__)
 
 
-splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")),
-                                   most_common_color_idx=random.randint(0, 4),
-                                   theme=THEME,
-                                   )
-
-
-splash.tk.call('wm', 'iconphoto', splash._w, tkinter.PhotoImage(file=os.path.join(app_dir, "icon.png")))
 class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -56,7 +49,9 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         self.abv_label.grid(row=0, column=0)
 
         self.vol_label = tkinter.Label(self, text="Volume (ml)")
-        self.vol_label.grid(row=0, column=1, columnspan=2)
+        self.vol_label.grid(row=0, column=1, columnspan=1)
+        
+        tkinter.Label(self, text="Resullt").grid(row=0, column=2, columnspan=1)
 
         self.abv_entry = tkinter.Entry(self, textvariable=self.abv_var)
         self.abv_entry.grid(row=1, column=0)
@@ -64,7 +59,7 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         vol_entry = tkinter.Entry(self, textvariable=self.vol_var)
         vol_entry.grid(row=1, column=1)
 
-        self.result_label = tkinter.Label(self, text="Result: ")
+        self.result_label = tkinter.Label(self, text="")
         self.result_label.grid(row=1, column=2)
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
@@ -110,30 +105,20 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
             # tkinter.messagebox.showerror("Error", str(e), icon="error", parent=tk)
             result = "Invalid input"
 
-        self.result_label.config(text="Result: {}".format(result))
-            
-loading_texts = ["Loading wines", "Opening cans of beers",
-                    "Loading spirits", "Mixing cocktails", "Pouring shots"]
+        self.result_label.config(text="{}".format(result))
 win = Drunkmeter(theme=THEME)
 win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id()))
 
-def loading_thread():
-    # Focus to the loading window
-    splash.focus_force()
-    win.withdraw()
-    if sys.platform in ['win32', 'cygwin']:
-        win.wm_attributes("-disabled", True)
-    time.sleep(0.5)
-    for i, text in enumerate(loading_texts):
-        splash.loading_status = text
-        time.sleep(0.5)
-    
-    if sys.platform in ['win32', 'cygwin']:
-        win.wm_attributes("-disabled", False)
-    time.sleep(0.5)
-    splash.withdraw()
+win.withdraw()
+splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")), win)
+splash.focus()
+def after_splash():
+    splash.destroy()
     win.deiconify()
+    win.focus()
+    win.iconphoto(True, ImageTk.PhotoImage(Image.open(os.path.join(app_dir, "icon.png"))))
+splash.after(3000, after_splash)
+    
 
-splash.loading_status = "Loading..."
-threading.Thread(target=loading_thread, name="SplashScreen Thread").start()
-splash.mainloop()
+
+win.mainloop()
