@@ -2,10 +2,11 @@ import os
 import tkinter
 import tkinter.messagebox
 import tkinter.ttk as ttk
+import sys
+import typing
 
 import tkmacosx
-from mttkinter import mtTkinter
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageColor
 
 import splashscreen
 import standardDrinks
@@ -21,7 +22,21 @@ ALCOHOL_DOSAGE = [
 app_dir = os.path.dirname(__file__)
 
 
-class Drunkmeter(mtTkinter.Tk):
+def is_color_dark(color):
+    """
+    According to https://stackoverflow.com/a/3943023/10930878
+    Check if the color is dark or not
+    """
+    if isinstance(color, str):
+        color = ImageColor.getcolor(color, "RGB")
+    r, g, b = color
+    r *= 0.299
+    g *= 0.587
+    b *= 0.114
+    color = (r, g, b)
+    return sum(color) < 186
+        
+class Drunkmeter(tkinter.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.title("Drunkmeter")
@@ -34,7 +49,6 @@ class Drunkmeter(mtTkinter.Tk):
         
         self.create_variables()
         self.build_ui()
-    
     
     def create_variables(self):
         self.vol_var = tkinter.StringVar()
@@ -63,7 +77,7 @@ class Drunkmeter(mtTkinter.Tk):
                                 activebackground="#ffd558", activeforeground="black")
         self.calculate_btn.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
 
-        # Display a grid displaying the alcohol dosage according to psychonautwiki
+        # Display a grid displaying the alcohol dosage
         self.dosage_label = tkinter.Label(self, text="Alcohol dosage (Standard drinks)")
         self.dosage_label.grid(row=3, column=0, columnspan=3)
 
@@ -75,9 +89,8 @@ class Drunkmeter(mtTkinter.Tk):
         dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2, pady=10)
 
         for dose, dosage, color in ALCOHOL_DOSAGE:
-            # Unpack the hex color into a tuple of 3 integers
-            is_color_dark = splashscreen.is_color_dark(color)
-            dosage_table.tag_configure(dose, background=color, foreground="white" if is_color_dark else "black")
+            is_dark = is_color_dark(color)
+            dosage_table.tag_configure(dose, background=color, foreground=is_dark and "white" or "black")
             dosage_table.insert('', index="end", values=[dose, dosage], tags=(dose))
 
     def calculate(self):
@@ -97,23 +110,22 @@ class Drunkmeter(mtTkinter.Tk):
             standard_drinks = standardDrinks.calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
             standard_drinks = round(standard_drinks, 2)
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
-        except ValueError as e:
-            # tkinter.messagebox.showerror("Error", str(e), icon="error", parent=tk)
+        except ValueError:
+            tkinter.messagebox.showerror("Imvalid input", "ABV and volume must be numbers", icon="error", parent=self)
             result = "Invalid input"
 
         self.result_label.config(text="{}".format(result))
+
 win = Drunkmeter()
-win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id()))
+win.eval('tk::PlaceWindow %s center' % win.winfo_pathname(win.winfo_id())) # Center the window
+win.iconphoto(True, ImageTk.PhotoImage(file=os.path.join(app_dir, "icon.png")))
 
-win.update()
 splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")), win)
-splash.wm_attributes("-topmost", 1)
-def after_splash():
+splash.toggle_root(hide=True)
+
+def after3s():
+    splash.toggle_root(hide=False)
     splash.destroy()
-    win.iconphoto(True, ImageTk.PhotoImage(Image.open(os.path.join(app_dir, "icon.png"))))
-    win.deiconify()
-splash.after(2500, after_splash)
     
-
-
+win.after(3000, after3s)
 win.mainloop()

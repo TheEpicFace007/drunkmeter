@@ -34,14 +34,16 @@ class SplashScreen(tkinter.Toplevel):
         self.geometry(f"{splash_img.width}x{splash_img.height}")
         self.resizable(False, False)
         
-        
+        self._root = root
     
     def toggle_root(self, hide=True):
+        """Toggle the root window, this is useful for hiding the root window while the splashscreen is active"""
         if hide:
-            self.root.withdraw()
+            self._root.withdraw()
         else:
-            self.root.deiconify()
-            self.root.update()
+            self._root.deiconify()
+            self._root.update()
+            
             
         
 
