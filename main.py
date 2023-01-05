@@ -33,9 +33,7 @@ def is_color_dark(color):
     if isinstance(color, str):
         color = ImageColor.getcolor(color, "RGB")
     r, g, b = color
-    r *= 0.299
-    g *= 0.587
-    b *= 0.114
+    r *= 0.299; g *= 0.587; b *= 0.114
     color = (r, g, b)
     return sum(color) < 186
         
@@ -79,7 +77,7 @@ class Drunkmeter(tkinter.Tk):
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
         self.calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#ffd558", activeforeground="black",
-                                     highlightcolor="#ffd558", relief=tkinter.RAISED,
+                                     highlightcolor="#ffd558", relief=tkinter.RAISED, 
                                      )
         self.calculate_btn.grid(row=2, column=0, columnspan=3, ipadx=30, ipady=3, pady=10)
 
