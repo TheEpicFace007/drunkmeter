@@ -27,6 +27,9 @@ def colortuple_to_hex(color):
 def is_color_dark(color):
     # Check if a color is dark
     # https://stackoverflow.com/a/3943023/1149779
+    if type(color) == str and color.startswith("#"):
+        # unpack RGB from hex color
+        color = tuple(int(color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
     return sum(color) < 382
 
 class SplashScreen(ttkthemes.ThemedTk, mtTkinter.Toplevel):
