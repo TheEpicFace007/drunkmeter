@@ -38,8 +38,7 @@ class SplashScreen(ttkthemes.ThemedTk, mtTkinter.Toplevel):
         splash_img.thumbnail((600, 400))
         self.wm_attributes("-topmost", True)
 
-        if  sys.platform == "darwin":
-            self.wm_attributes("-type", "splash")
+        if sys.platform == "darwin":
             self.wm_attributes("-transparent", True)
             self.wm_attributes("-notify", True)
             self.wm_attributes("-fullscreen", False)
@@ -81,9 +80,11 @@ class SplashScreen(ttkthemes.ThemedTk, mtTkinter.Toplevel):
         self._loading_label['text'] = value
     
     def destroy(self):
-        print("Destroying...")
         self.loading_bar.stop()
         return super(SplashScreen, self).destroy()
+
+    def __delattr__(self, __name: str) -> None:
+        return super().__delattr__(__name)
     
 if __name__ == '__main__':
     splash_img = Image.open("./splashscreen.png")
