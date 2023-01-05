@@ -4,32 +4,9 @@ import tkinter
 
 from PIL import Image, ImageTk
 
-
-def get_5_most_common_color(image):
-    """Get the 5 most common color in a PIL image"""
-    # https://stackoverflow.com/a/431112/1149779
-    width, height = image.size
-    pixels = image.getcolors(width * height)
-    most_common_colors = sorted(pixels, key=lambda t: t[0], reverse=True)
-    return [pixel[1] for pixel in most_common_colors][:5]
-    
-def colortuple_to_hex(color):
-    # Convert a color tuple to hex
-    # https://stackoverflow.com/a/214657/1149779
-    return '#%02x%02x%02x' % color
-
-def is_color_dark(color):
-    # Check if a color is dark
-    # https://stackoverflow.com/a/3943023/1149779
-    if type(color) == str and color.startswith("#"):
-        # unpack RGB from hex color
-        color = tuple(int(color.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
-    return sum(color) < 382
-
 class SplashScreen(tkinter.Toplevel):
-    def __init__(self, splash_img, root, theme=None, *args, **kwargs):
+    def __init__(self, splash_img, root, *args, **kwargs):
         super(SplashScreen, self).__init__(root, *args, **kwargs)
-        root.withdraw()
         splash_img.thumbnail((600, 400))
 
         self.wm_attributes("-topmost", True)
@@ -56,10 +33,20 @@ class SplashScreen(tkinter.Toplevel):
         # Set sizing constraints
         self.geometry(f"{splash_img.width}x{splash_img.height}")
         self.resizable(False, False)
-        # Set the icon as icon.png
-        root.iconphoto(True, tkinter.PhotoImage(file="./icon.png"))
+        
+        
+    
+    def toggle_root(self, hide=True):
+        if hide:
+            self.root.withdraw()
+        else:
+            self.root.deiconify()
+            self.root.update()
+            
+        
+
         
 if __name__ == '__main__':
     splash_img = Image.open("./splashscreen.png")
-    splashscreen = SplashScreen(splash_img, None, most_common_color_idx=random.randint(0, 4))
+    splashscreen = SplashScreen(splash_img, tkinter.Tk())
     splashscreen.mainloop()
