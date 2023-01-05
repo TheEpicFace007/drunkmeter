@@ -17,11 +17,11 @@ import standardDrinks
 
 THEME = "Clearlooks"
 ALCOHOL_DOSAGE = [
-    ("Threshold", "1 standard drink"),
-    ("Light", "1-3 standard drinks"),
-    ("Common", "3-5 standard drinks"),
-    ("Strong", "5-6 standard drinks"),
-    ("Heavy", "6+ standard drinks")
+    ("Threshold", "1 standard drink", "#81f8f3"),
+    ("Light", "1-3 standard drinks", "#90ed91"),
+    ("Common", "3-5 standard drinks", "#ffff00"),
+    ("Strong", "5-6 standard drinks", "#ffff00"),
+    ("Heavy", "6+ standard drinks", "#ff0000")
 ]
 app_dir = os.path.dirname(__file__)
 
@@ -83,8 +83,11 @@ class Drunkmeter(ttkthemes.ThemedTk, mtTkinter.Tk):
         dosage_table.heading("dosage", text="Dosage")
         dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2)
 
-        for dose, dosage in ALCOHOL_DOSAGE:
-            dosage_table.insert('', index="end", values=[dose, dosage])
+        for dose, dosage, color in ALCOHOL_DOSAGE:
+            # Unpack the hex color into a tuple of 3 integers
+            is_color_dark = splashscreen.is_color_dark(color)
+            dosage_table.tag_configure(dose, background=color, foreground="white" if is_color_dark else "black")
+            dosage_table.insert('', index="end", values=[dose, dosage], tags=(dose))
 
     def calculate(self):
         try:
