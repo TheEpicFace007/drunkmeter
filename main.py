@@ -12,7 +12,14 @@ from rich.pretty import pprint
 from PIL import Image, ImageTk, ImageColor
 
 import splashscreen
-import standardDrinks
+
+
+def calculate_standard_drink(abv, volume):
+    """
+    Calculate the number of standard drink in a drink according to the WHO
+    """
+    return round(abv * volume / 1000, 2)
+
 
 THEME = "Clearlooks"
 ALCOHOL_DOSAGE = [
@@ -94,7 +101,7 @@ class Drunkmeter(tkinter.Tk):
 
         for dose, dosage, color in ALCOHOL_DOSAGE:
             is_dark = is_color_dark(color)
-            dosage_table.tag_configure(dose, background=color, foreground=is_dark and "white" or "black")
+            dosage_table.tag_configure(dose, background=color, foreground="white" if is_dark else "black")
             dosage_table.insert('', index="end", values=[dose, dosage], tags=(dose))
 
     def calculate(self):
@@ -111,8 +118,7 @@ class Drunkmeter(tkinter.Tk):
                 tkinter.messagebox.showerror(
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
-            standard_drinks = standardDrinks.calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
-            standard_drinks = round(standard_drinks, 2)
+            standard_drinks = calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError:
             tkinter.messagebox.showerror("Imvalid input", "ABV and volume must be numbers", icon="error", parent=self)
