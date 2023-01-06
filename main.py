@@ -129,10 +129,10 @@ win.geometry(f"+{win.winfo_screenwidth() // 2 - win.winfo_width() // 2}+{win.win
 win.iconphoto(True, ImageTk.PhotoImage(file=os.path.join(app_dir, "icon.png")))
 
 splash = splashscreen.SplashScreen(Image.open(os.path.join(app_dir, "splashscreen.png")), win)
-splash.hide_win(hide=True)
+splash.hide_root(hide=True)
 
 def after3s():
-    splash.hide_win(hide=False)
+    splash.hide_root(hide=False)
     splash.destroy()
     
 win.after(3000, after3s)
