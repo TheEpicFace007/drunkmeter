@@ -74,9 +74,11 @@ class Drunkmeter(tkinter.Tk):
 
         self.abv_entry = ttk.Entry(self, textvariable=self.abv_var)
         self.abv_entry.grid(row=1, column=0)
+        self.abv_entry.bind("<Return>", lambda event: self.calculate())
 
         self.vol_entry = ttk.Entry(self, textvariable=self.vol_var)
         self.vol_entry.grid(row=1, column=1)
+        self.vol_entry.bind("<Return>", lambda event: self.calculate())
 
         self.result_container = tkinter.Label(self, text="")
         self.result_container.grid(row=1, column=2)
