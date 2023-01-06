@@ -112,7 +112,7 @@ class Drunkmeter(tkinter.Tk):
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
             standard_drinks = standardDrinks.calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
-            standard_drinks = round(standard_drinks, 2)
+            standard_drinks = round(standard_drinks, 1)
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError:
             tkinter.messagebox.showerror("Imvalid input", "ABV and volume must be numbers", icon="error", parent=self)
