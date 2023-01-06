@@ -36,7 +36,7 @@ class SplashScreen(tkinter.Toplevel):
         
         self._root = root
     
-    def toggle_root(self, hide=True):
+    def hide_win(self, hide=True):
         """Toggle the root window, this is useful for hiding the root window while the splashscreen is active"""
         if hide:
             self._root.withdraw()
