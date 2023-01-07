@@ -23,10 +23,10 @@ def calculate_standard_drink(abv, volume):
 
 THEME = "Clearlooks"
 ALCOHOL_DOSAGE = [
-    ("Threshold", "1 standard drink", "#81f8f3"),
-    ("Light", "1-3 standard drinks", "#90ed91"),
+    ("Threshold", "1 standard drink", "#81F7F3"),
+    ("Light", "1-3 standard drinks", "#90ee90"),
     ("Common", "3-5 standard drinks", "#ffff00"),
-    ("Strong", "5-6 standard drinks", "#ff9900"),
+    ("Strong", "5-6 standard drinks", "#ffa500"),
     ("Heavy", "6+ standard drinks", "#ff0000")
 ]
 app_dir = os.path.dirname(__file__)
