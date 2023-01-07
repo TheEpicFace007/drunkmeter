@@ -21,7 +21,6 @@ def calculate_standard_drink(abv, volume):
     return round(abv * volume / 1000, 2)
 
 
-THEME = "Clearlooks"
 ALCOHOL_DOSAGE = [
     ("Threshold", "1 standard drink", "#81F7F3"),
     ("Light", "1-3 standard drinks", "#90ee90"),
@@ -55,8 +54,21 @@ class Drunkmeter(tkinter.Tk):
         for col in range(3):
             self.columnconfigure(col, weight=1)
         
+        self.create_theme()
         self.create_variables()
         self.build_ui()
+    
+    def create_theme(self):
+        # Style the treevview so it looks like a table with a header with a dark border color
+        tv_style = ttk.Style()
+        tv_style.theme_use("default")
+        tv_style.configure("Treeview", background="golden", foreground="black", rowheight=25,
+                           fieldbackground="blue")
+        tv_style.map("Treeview", background=[("selected", "blue")])
+        tv_style.configure("Treeview.Heading", background="gold", foreground="black",
+                           bordercolor="#ffd900", relief="solid", font=("sans-serif", 10, "bold"))
+        tv_style.map("Treeview.Heading", background=[("active", "white")])
+        
     
     def create_variables(self):
         self.vol_var = tkinter.StringVar()
@@ -129,7 +141,7 @@ class Drunkmeter(tkinter.Tk):
         self.result_container.config(text="{}".format(result))
 
 if sys.platform == "darwin":
-    time.sleep(1.75) # Wait 1 seocnd in order to bounce the dock icon
+    pass
 win = Drunkmeter()
 # Place the windows on the center of the screen in a manner that works on all platforms
 win.update_idletasks()
