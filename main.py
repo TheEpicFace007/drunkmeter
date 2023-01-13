@@ -63,7 +63,7 @@ class Drunkmeter(tkinter.Tk):
         tv_style = ttk.Style()
         tv_style.theme_use("default")
         tv_style.configure("Treeview", background="golden", foreground="black", rowheight=25,
-                           fieldbackground="blue")
+                           fieldbackground="#ffd000")
         tv_style.map("Treeview", background=[("selected", "blue")])
         tv_style.configure("Treeview.Heading", background="gold", foreground="black",
                            bordercolor="#ffd900", relief="solid", font=("sans-serif", 10, "bold"))
@@ -108,7 +108,7 @@ class Drunkmeter(tkinter.Tk):
 
         dosage_table = ttk.Treeview(self, show="headings", selectmode="none",
                                     height=5, columns=("strenght", "dosage"),
-                                    displaycolumns="#all")
+                                    displaycolumns="#all", padding=(5, 5))
         dosage_table.heading("strenght", text="Strenght")
         dosage_table.heading("dosage", text="Dosage")
         dosage_table.grid(row=4, column=0, columnspan=3, rowspan=2, pady=10)
