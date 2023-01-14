@@ -60,7 +60,7 @@ class SplashScreen(tkinter.Toplevel):
     
     @property
     def gui_progress_text(self):
-        return self._gui_progress_text
+        return self._gui_progress_text.get()
     @gui_progress_text.setter
     def gui_progress_text(self, value):
         self._gui_progress_text.set(value)
