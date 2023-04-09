@@ -94,7 +94,7 @@ class Drunkmeter(tkinter.Tk):
 
         self.result_container = tkinter.Label(self, text="")
         self.result_container.grid(row=1, column=2)
-        self.result_container.configure(font=("sans-serif", 20, "bold"))
+        self.result_container.configure(font=("sans-serif", 20, "bold"), borderwidth=2, relief="sunken", padx=10, pady=5)
         
         self.calculate_btn = tkmacosx.Button(self, text="Calculate", command=self.calculate)
         self.calculate_btn.configure(bg="#FFC000", fg="black", activebackground="#ffd558", activeforeground="black",
@@ -133,12 +133,23 @@ class Drunkmeter(tkinter.Tk):
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
             standard_drinks = calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
+            if standard_drinks == 1:
+                self.result_container.config(fg="#81F7F3", bg="#ccc")
+            elif standard_drinks > 1 and standard_drinks <= 3:
+                self.result_container.config(fg="#98ee90", bg="#ccc")
+            elif standard_drinks > 3 and standard_drinks <= 5:
+                self.result_container.config(fg="#ffff00", bg="#ccc")
+            elif standard_drinks > 5 and standard_drinks <= 6:
+                self.result_container.config(fg="#ffa500", bg="#ccc")
+            else:
+                self.result_container.config(fg="#ff0000", bg="#ccc")
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError:
-            tkinter.messagebox.showerror("Imvalid input", "ABV and volume must be numbers", icon="error", parent=self)
+            tkinter.messagebox.showerror("Imvalid sinput", "ABV and volume must be numbers", icon="error", parent=self)
             result = "Invalid input"
-
+            self.result_container.config(fg="#cb0606", bg="white")
         self.result_container.config(text="{}".format(result))
+        
 
 if sys.platform == "darwin":
     pass
