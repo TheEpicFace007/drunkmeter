@@ -57,6 +57,7 @@ class Drunkmeter(tkinter.Tk):
         self.create_theme()
         self.create_variables()
         self.build_ui()
+        self.width
     
     def create_theme(self):
         # Style the treevview so it looks like a table with a header with a dark border color
@@ -66,7 +67,7 @@ class Drunkmeter(tkinter.Tk):
                            fieldbackground="#ffd000")
         tv_style.map("Treeview", background=[("selected", "blue")])
         tv_style.configure("Treeview.Heading", background="gold", foreground="black",
-                           bordercolor="#ffd900", relief="solid", font=("sans-serif", 10, "bold"))
+                           bordercolor="#ffd900", relief="solid", font=("./StayVibes.otf", 10, "bold"))
         tv_style.map("Treeview.Heading", background=[("active", "white")])
         
     
@@ -133,16 +134,16 @@ class Drunkmeter(tkinter.Tk):
                     "Error", "Volume must be greater than 0", icon="error", parent=self)
                 return
             standard_drinks = calculate_standard_drink(float(self.abv_var.get()), float(self.vol_var.get()))
-            if standard_drinks == 1:
-                self.result_container.config(fg="#81F7F3", bg="#ccc")
+            if standard_drinks == 1 or standard_drinks < 1:
+                self.result_container.config(bg="#81F7F3", fg="black")
             elif standard_drinks > 1 and standard_drinks <= 3:
-                self.result_container.config(fg="#98ee90", bg="#ccc")
+                self.result_container.config(bg="#98ee90", fg="#000")
             elif standard_drinks > 3 and standard_drinks <= 5:
-                self.result_container.config(fg="#ffff00", bg="#ccc")
+                self.result_container.config(bg="#ffff00", fg="#000")
             elif standard_drinks > 5 and standard_drinks <= 6:
-                self.result_container.config(fg="#ffa500", bg="#ccc")
+                self.result_container.config(bg="#ffa500", fg="#000")
             else:
-                self.result_container.config(fg="#ff0000", bg="#ccc")
+                self.result_container.config(fg="#ff0000", fg="#000")
             result = f"{standard_drinks} standard drink{standard_drinks > 1 and 's' or ''}"
         except ValueError:
             tkinter.messagebox.showerror("Imvalid sinput", "ABV and volume must be numbers", icon="error", parent=self)
